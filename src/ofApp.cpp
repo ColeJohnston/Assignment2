@@ -10,9 +10,8 @@ struct Node {
 
 
 class LinkedList {
-private:
-    Node* head;
 public:
+    Node* head;
     LinkedList() : head(nullptr) {}
 
     void insertAtHead(int value) {
@@ -41,7 +40,7 @@ public:
         delete temp;
     }
 
-    void deleteFromTail(int value) {
+    void deleteFromTail() {
         if (!head) return;
         if (!head->next) {
             delete head;
@@ -59,22 +58,46 @@ public:
 };
 
 LinkedList linkedList;
+float activeTime = 0;
+float amplitude = 1;
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-
-    linkedList.insertAtHead(500);
 }
 
 //--------------------------------------------------------------
-void ofApp::update(){
-
+void ofApp::update() {
+    activeTime += 0.05;
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw() {
+    Node* temp = linkedList.head;
+    float xPos = 75;
+    float yBase = 250;
+    float offset = 0;
+    while (temp) {
+        float yOffset = sin(activeTime + offset) * amplitude;
+        float yPos = yBase + yOffset;
+        xPos += temp->data + 10;
 
+        ofSetColor(255,0,0);
+        ofDrawCircle(xPos, yPos, temp->data);
+
+        ofSetColor(0);
+        ofDrawBitmapString(ofToString(temp->data), xPos - 5, yPos + 5);
+
+        if (temp->next) {
+            ofSetColor(255,0,0);
+            ofDrawLine(xPos, yPos, xPos + temp->data + temp->next->data + 10, yBase + sin(activeTime + offset + 0.5) * amplitude);
+        }
+
+        xPos += temp->data;
+        temp = temp->next;
+        offset += 0.5;
+    }
 }
+
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
@@ -83,12 +106,21 @@ void ofApp::keyPressed(int key){
         linkedList.insertAtHead(ofRandom(0, 100));
         break;
     case 'w':
+        linkedList.insertAtTail(ofRandom(0, 100));
         break;
     case 'a':
+        linkedList.deleteFromHead();
         break;
     case 's':
+        linkedList.deleteFromTail();
         break;
     case 'e':
+        break;
+    case 'z':
+        amplitude += 1;
+        break;
+    case'x':
+        amplitude -= 1;
         break;
     }
 }
