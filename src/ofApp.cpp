@@ -59,7 +59,7 @@ public:
 
 LinkedList linkedList;
 float activeTime = 0;
-float amplitude = 1;
+float amplitude = 50;
 array<int, 2> cameraPosition = { 0,0 };
 //--------------------------------------------------------------
 void ofApp::setup() {
@@ -134,10 +134,10 @@ void ofApp::keyPressed(int key) {
 		} while (!sorted);
 		break;
 	case 'z':
-		amplitude += 1;
+		amplitude += 10;
 		break;
 	case'x':
-		amplitude -= 1;
+		amplitude -= 10;
 		break;
 
 	case OF_KEY_LEFT:
